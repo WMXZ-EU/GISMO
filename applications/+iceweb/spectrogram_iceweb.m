@@ -63,7 +63,7 @@ end
 
 nfft = round(get(s,'nfft'));
 overlap = floor(get(s, 'over'));
-dBlims = get(s, 'dBlims')
+dBlims = get(s, 'dBlims');
 fmax = get(s, 'freqmax');
 
 % Set appropriate date ticks
@@ -81,14 +81,16 @@ for c=1:numw
         [S,F,T] = spectrogram(data, nfft, nfft/2, nfft, fsamp);
 
         Y = 20*log10(abs(S)+eps);
-        fmax
-        max(F)
-        index = find(F <= fmax)
+%        fmax
+%        max(F)
+        index = find(F <= fmax);
         if F(1)==0,
             F(1)=0.001;
         end
 
-        [spectrogramPosition, tracePosition] = iceweb.calculatePanelPositions(numw, c, spectrogramFraction, 0.08, 0.05, 0.88, 0.95);
+		dx=0.08;		dy=0.08;		dw=0.88;		dh=0.85;%0.95;
+        [spectrogramPosition, tracePosition] = ...
+			iceweb.calculatePanelPositions(numw, c, spectrogramFraction, dx,dy,dw,dh);
         axes('position', spectrogramPosition);
         T = wt.start + T/86400;
         F = F(1:max(index));
@@ -103,9 +105,9 @@ for c=1:numw
             hold on; plot(T,meanF,'k','LineWidth',3);
             % peak frequency
             [maxvalue,maxindex] = max(abs(S));
-            size(maxindex)
+            %size(maxindex)
             fmax = F(maxindex);
-            size(fmax)
+            %size(fmax)
             hold on; plot(T,fmax,'r','LineWidth',3);
             
         else
